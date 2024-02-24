@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from 'ai'
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 export async function POST(request: Request) {
   const openai = new OpenAI({
