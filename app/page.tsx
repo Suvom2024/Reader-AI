@@ -690,7 +690,7 @@ export default function Home() {
 
     const deleteIntervalId = setInterval(() => {
       deleteSnipMeFile();
-    }, 120000); // Delete every 120000 milliseconds (2 minutes)
+    }, 300000); // Delete every 120000 milliseconds (2 minutes)
 
     
     // Clear the interval when the component is unmounted
