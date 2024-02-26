@@ -640,7 +640,7 @@ export default function Home() {
         const image = canvas.toDataURL('image/png');
   
         // Send the image to the backend
-        const response = await fetch('http://127.0.0.1:5000/api/save-snip', {
+        const response = await fetch('/api/save-snip', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -665,7 +665,7 @@ export default function Home() {
     // Function to check if the 'snip_me.png' file exists on the server
     const checkForSnipMeFile = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/check-snip-existence');
+        const response = await fetch('/api/check-snip-existence');
         const data = await response.json();
         setIsSnipMeAvailable(data.exists); // Set the state based on the existence of the file
       } catch (error) {
@@ -675,7 +675,7 @@ export default function Home() {
   
     const deleteSnipMeFile = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/delete-snip', { method: 'DELETE' });
+        const response = await fetch('/api/delete-snip', { method: 'DELETE' });
         const data = await response.json();
       } catch (error) {
       
