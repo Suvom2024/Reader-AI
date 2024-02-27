@@ -16,6 +16,8 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/f
 import React from "react";
 import { FiScissors } from 'react-icons/fi'; // Import the scissors icon from react-icons
 import html2canvas from 'html2canvas';
+import { storage } from '@/lib/firebase-config';
+import { ref, getDownloadURL } from 'firebase/storage';
 
 export default function Home() {
   const [zoomLevel, setZoomLevel] = useState(0.7);
@@ -210,56 +212,50 @@ export default function Home() {
     }
   }
 
-  const describeImage = async (src: string, asyncId: number, additionalInfo :string ) => {
+  const describeImage = async (src: string, asyncId: number, additionalInfo: string) => {
     setDescribeImageText("");
-
-    if (asyncIdRef.current !== asyncId) return;
-
-    const toDataURL = (url: string) => fetch(url)
-      .then(response => response.blob())
-      .then(blob => new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onloadend = () => resolve(reader.result)
-        reader.onerror = reject
-        reader.readAsDataURL(blob)
-      }))
-
-      const imgURL = await toDataURL(src) as string
-      console.log(additionalInfo)
-      const resp = await fetch("/api/vision", {
-        method: "POST",
-        body: JSON.stringify({
-          image64: imgURL.split("base64,")[1],
-          additionalInfo: additionalInfo, // Add additionalInfo to the request body
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      let completion = ""
-      if (resp.body) {
-        const reader = resp.body.getReader();
-        while (true) {
-          if (asyncIdRef.current !== asyncId) {
-            setDescribeImageText("");
-            return;
-          };
-
-          const { done, value } = await reader.read();
-          if (done) {
-            break;
-          }
   
-          const decoder = createChunkDecoder();
-          const decoded = decoder(value);
-          completion += decoded
-          setDescribeImageText((prevCompletion) => prevCompletion + decoded);
+    if (asyncIdRef.current !== asyncId) return;
+  
+    // Use the image source directly without converting to Data URL
+    const imgURL = src;
+  
+    console.log(imgURL);
+    const resp = await fetch("/api/vision", {
+      method: "POST",
+      body: JSON.stringify({
+        image64: imgURL,
+        additionalInfo: additionalInfo, // Add additionalInfo to the request body
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  
+    let completion = "";
+    if (resp.body) {
+      const reader = resp.body.getReader();
+      while (true) {
+        if (asyncIdRef.current !== asyncId) {
+          setDescribeImageText("");
+          return;
         }
+  
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
+  
+        const decoder = createChunkDecoder();
+        const decoded = decoder(value);
+        completion += decoded;
+        setDescribeImageText((prevCompletion) => prevCompletion + decoded);
       }
-
-      return completion
-  }
+    }
+  
+    return completion;
+  };
+  
 
   // const handleDescribeImageFromIdx = async (idx: number) => {
   //   clearDocument();
@@ -281,12 +277,14 @@ export default function Home() {
   //   setDescribeImageIdxLoading(-1);
   // }
 
-  const handleDescribeImage = async (additionalInfo : string) => {
+  const handleDescribeImage = async (additionalInfo: string) => {
     clearDocument();
   
     setDescribeImageIdxLoading(0);
   
-    const imgSrc = './snip_me.png';
+    // Create a reference to the image in Firebase Storage
+    const imgRef = ref(storage, 'snip_me.png');
+    const imgSrc = await getDownloadURL(imgRef);
     asyncIdRef.current = Date.now();
     const description = await describeImage(imgSrc, asyncIdRef.current, additionalInfo);
   
