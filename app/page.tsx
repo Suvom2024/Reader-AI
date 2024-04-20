@@ -34,7 +34,7 @@ export default function Home() {
   const [explainCompletion, setExplainCompletion] = useState("");
   const [currentExplainAction, setCurrentExplainAction] = useState<"eli5"|"summary"|"poem"|"UPSC"|null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [language, setLanguage] = useState("Bengali")
+  const [language, setLanguage] = useState("Arabic")
   const [translateLoading, setTranslateLoading] = useState(false);
   const [translation, setTranslation] = useState("");
   const [translationTTSLoading, setTranslationTTSLoading] = useState(false);
@@ -748,7 +748,7 @@ export default function Home() {
     <div className="iframe-container">
       <iframe
         ref={iframeRef}
-        src="/Biology_IX.html"
+        src="/baby.html"
         title="Biology Iframe"
         className="iframe-content"
         style={{ transform: `scale(${zoomLevel})` }}
@@ -777,10 +777,10 @@ export default function Home() {
                   {explainLoading === "poem" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Poem
                 </Button>
-                <Button variant={currentExplainAction === "UPSC" ? "default" : "outline"} disabled={!!explainLoading || !selectedText} onClick={() => handleExplainAction("UPSC")}>
+                {/* <Button variant={currentExplainAction === "UPSC" ? "default" : "outline"} disabled={!!explainLoading || !selectedText} onClick={() => handleExplainAction("UPSC")}>
                   {explainLoading === "UPSC" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   UPSC Assistant
-                </Button>
+                </Button> */}
               </div>
               {(explainCompletion || !selectedText) && <div className="w-full text-sm mt-4">
                 {explainCompletion && <pre className="whitespace-pre-line">{explainCompletion}</pre>}
