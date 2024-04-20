@@ -748,7 +748,7 @@ export default function Home() {
     <div className="iframe-container">
       <iframe
         ref={iframeRef}
-        src="/baby.html"
+        src="/Biology_IX.html"
         title="Biology Iframe"
         className="iframe-content"
         style={{ transform: `scale(${zoomLevel})` }}
