@@ -34,7 +34,7 @@ export default function Home() {
   const [explainCompletion, setExplainCompletion] = useState("");
   const [currentExplainAction, setCurrentExplainAction] = useState<"eli5"|"summary"|"poem"|"UPSC"|null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [language, setLanguage] = useState("Arabic")
+  const [language, setLanguage] = useState("Bengali")
   const [translateLoading, setTranslateLoading] = useState(false);
   const [translation, setTranslation] = useState("");
   const [translationTTSLoading, setTranslationTTSLoading] = useState(false);
@@ -748,7 +748,7 @@ export default function Home() {
     <div className="iframe-container">
       <iframe
         ref={iframeRef}
-        src="/Biology_IX.html"
+        src="/Rapid-Reader-IX.html"
         title="Biology Iframe"
         className="iframe-content"
         style={{ transform: `scale(${zoomLevel})` }}
@@ -767,15 +767,15 @@ export default function Home() {
               <div className="flex items-center space-x-1">
                 <Button variant={currentExplainAction === "eli5" ? "default" : "outline"} disabled={!!explainLoading || !selectedText} onClick={() => handleExplainAction("eli5")}>
                   {explainLoading === "eli5" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  ELI5
+                  Explain To Me
                 </Button> 
                 <Button variant={currentExplainAction === "summary" ? "default" : "outline"} disabled={!!explainLoading || !selectedText} onClick={() => handleExplainAction("summary")}>
                   {explainLoading === "summary" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Summarize
+                  Genarate Q/A
                 </Button>
                 <Button variant={currentExplainAction === "poem" ? "default" : "outline"} disabled={!!explainLoading || !selectedText} onClick={() => handleExplainAction("poem")}>
                   {explainLoading === "poem" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Poem
+                  Reference to Context
                 </Button>
                 {/* <Button variant={currentExplainAction === "UPSC" ? "default" : "outline"} disabled={!!explainLoading || !selectedText} onClick={() => handleExplainAction("UPSC")}>
                   {explainLoading === "UPSC" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
