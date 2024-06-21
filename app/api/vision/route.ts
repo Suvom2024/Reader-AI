@@ -37,7 +37,7 @@ export async function POST(request: Request) {
         { image: base64Image, resize: 768 }
       ],
     }],
-    model: "gpt-4-vision-preview",
+    model: "gpt-4o",
     stream: true,
     max_tokens: 500,
   });
